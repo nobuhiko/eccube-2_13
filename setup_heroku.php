@@ -9,4 +9,5 @@ putenv("DBPASS=".$url['pass']);
 putenv("HTTP_URL=http://".getenv('HEROKU_APP_NAME').".herokuapp.com");
 putenv("HTTPS_URL=http://".getenv('HEROKU_APP_NAME').".herokuapp.com");
 
-exec("sh ./eccube_install.sh postgres");
+exec("sh ./eccube_install.sh heroku", $output, $return_var);
+

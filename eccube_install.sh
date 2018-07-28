@@ -30,16 +30,16 @@
 CONFIG_PHP="data/config/config.php"
 ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
 SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
-HTTP_URL=${HTTP_URL:-"http://test.local"}
-HTTPS_URL=${HTTPS_URL:-"http://test.local/"}
+HTTP_URL=${HTTP_URL:-"https://polar-citadel-45053.herokuapp.com/"}
+HTTPS_URL=${HTTPS_URL:-"https://polar-citadel-45053.herokuapp.com/"}
 ROOT_URLPATH=${ROOT_URLPATH:-"/"}
 DOMAIN_NAME=${DOMAIN_NAME:-""}
 ADMIN_DIR=${ADMIN_DIR:-"admin/"}
 
-DBSERVER=${DBSERVER-"127.0.0.1"}
-DBNAME=${DBNAME:-"cube213_dev"}
-DBUSER=${DBUSER:-"cube213_dev_user"}
-DBPASS=${DBPASS:-"password"}
+DBSERVER=${DBSERVER-"ec2-174-129-192-200.compute-1.amazonaws.com"}
+DBNAME=${DBNAME:-"dfe4mql1b47u0g"}
+DBUSER=${DBUSER:-"tobdiairqjrhte"}
+DBPASS=${DBPASS:-"1aee62b8f0884cebd14fba8f123bf7ab7caa65e8effe6a6ffe2b2b9b90349de1"}
 
 ADMINPASS="f6b126507a5d00dbdbb0f326fe855ddf84facd57c5603ffdf7e08fbb46bd633c"
 AUTH_MAGIC="droucliuijeanamiundpnoufrouphudrastiokec"
@@ -47,6 +47,15 @@ AUTH_MAGIC="droucliuijeanamiundpnoufrouphudrastiokec"
 DBTYPE=$1;
 
 case "${DBTYPE}" in
+"heroku" )
+    #-- DB Seting Postgres
+    PSQL="psql -h ${DBSERVER}"
+    export PGPASSWORD=${DBPASS}
+    PGUSER=postgres
+    DROPDB="dropdb -h ${DBSERVER}"
+    CREATEDB="createdb -h ${DBSERVER}"
+    DBPORT=5432
+;;
 "appveyor" )
     #-- DB Seting Postgres
     PSQL=psql
@@ -141,6 +150,9 @@ dtb_tax_rule_tax_rule_id_seq
     comb_sql="";
     for S in $SEQUENCES; do
         case ${DBTYPE} in
+            heroku)
+                sql=$(echo "CREATE SEQUENCE ${S} START 10000;")
+            ;;
             appveyor)
                 sql=$(echo "CREATE SEQUENCE ${S} START 10000;")
             ;;
@@ -162,6 +174,9 @@ dtb_tax_rule_tax_rule_id_seq
     done;
 
     case ${DBTYPE} in
+        heroku)
+            echo ${comb_sql} | ${PSQL} -U ${DBUSER} ${DBNAME}
+        ;;
         appveyor)
             echo ${comb_sql} | ${PSQL} -U ${DBUSER} ${DBNAME}
         ;;
@@ -221,6 +236,22 @@ adjust_directory_permissions
 SQL_DIR="./html/install/sql"
 
 case "${DBTYPE}" in
+"heroku" )
+    # PostgreSQL
+    echo "dropdb..."
+    ${DROPDB} ${DBNAME}
+    echo "createdb..."
+    ${CREATEDB} -U ${DBUSER} ${DBNAME} 
+    echo "create table..."
+    ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/create_table_pgsql.sql ${DBNAME}
+    echo "insert data..."
+    ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/insert_data.sql ${DBNAME}
+    echo "create sequence table..."
+    create_sequence_tables
+    echo "execute optional SQL..."
+    get_optional_sql | ${PSQL} -h ${DBSERVER} -U ${DBUSER} ${DBNAME}
+	DBTYPE="pgsql"
+;;
 "appveyor" )
     # PostgreSQL
     echo "dropdb..."
@@ -234,7 +265,7 @@ case "${DBTYPE}" in
     echo "create sequence table..."
     create_sequence_tables
     echo "execute optional SQL..."
-    get_optional_sql | ${PSQL} -U ${DBUSER} ${DBNAME}
+    get_optional_sql | ${PSQL} -h ${DBSERVER} -U ${DBUSER} ${DBNAME}
 	DBTYPE="pgsql"
 ;;
 "pgsql" )
