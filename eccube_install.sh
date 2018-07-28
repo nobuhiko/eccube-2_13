@@ -48,7 +48,7 @@ DBTYPE=$1;
 
 if [ $DBTYPE = "heroku" ]; then
   echo "Heroku file copy..."
-cp -rv "./tests/config.php" "./${CONFIG_PHP}"
+cp "./tests/config.php" "./${CONFIG_PHP}"
 fi
 
 case "${DBTYPE}" in
@@ -57,7 +57,6 @@ case "${DBTYPE}" in
     PSQL="psql -h ${DBSERVER}"
     export PGPASSWORD=${DBPASS}
     PGUSER=postgres
-    DROPDB="heroku pg:reset DATABASE"
     DBPORT=5432
 ;;
 "appveyor" )
@@ -242,8 +241,6 @@ SQL_DIR="./html/install/sql"
 case "${DBTYPE}" in
 "heroku" )
     # PostgreSQL
-    echo "dropdb..."
-    ${DROPDB} ${DBNAME}
     echo "create table..."
     ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/create_table_pgsql.sql ${DBNAME}
     echo "insert data..."
