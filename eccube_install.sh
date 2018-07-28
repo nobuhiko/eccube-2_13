@@ -48,7 +48,7 @@ DBTYPE=$1;
 
 if [ $DBTYPE = "heroku" ]; then
   echo "Heroku file copy..."
-cp -rv "./tests/config.php" "./{$CONFIG_PHP}"
+cp -rv "./tests/config.php" "./${CONFIG_PHP}"
 fi
 
 case "${DBTYPE}" in
