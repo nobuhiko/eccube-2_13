@@ -46,3 +46,4 @@ Composerを導入に伴い、clone後に`composer install`の実行が必要で�
 ---
 
 上記に含まれない新規機能開発や構造の変化を伴う修正等については、[EC-CUBE/ec-cube](https://github.com/EC-CUBE/ec-cube)にて開発を行っております。
+
