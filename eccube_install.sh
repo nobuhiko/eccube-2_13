@@ -220,6 +220,8 @@ define('SMTP_USER', '');
 define('SMTP_PASSWORD', '');
 
 EOF
+
+    cat "./${CONFIG_PHP}"
 }
 
 
@@ -247,7 +249,7 @@ case "${DBTYPE}" in
 	DBTYPE="pgsql"
 ;;
 "appveyor" )
-    # PostgreSQL
+   # PostgreSQL
     echo "dropdb..."
     ${DROPDB} ${DBNAME}
     echo "createdb..."
