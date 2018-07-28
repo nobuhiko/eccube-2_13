@@ -46,11 +46,6 @@ AUTH_MAGIC="droucliuijeanamiundpnoufrouphudrastiokec"
 
 DBTYPE=$1;
 
-if [ $DBTYPE = "heroku" ]; then
-  echo "Heroku file copy..."
-cp "./tests/config.php" "./${CONFIG_PHP}"
-fi
-
 case "${DBTYPE}" in
 "heroku" )
     #-- DB Seting Postgres
@@ -200,7 +195,7 @@ get_optional_sql()
 
 create_config_php()
 {
-    cat > "./${CONFIG_PHP}" <<__EOF__
+    cat <<EOF > "./${CONFIG_PHP}"
 <?php
 define('ECCUBE_INSTALL', 'ON');
 define('HTTP_URL', '${HTTP_URL}');
@@ -224,7 +219,7 @@ define('SMTP_PORT', '');
 define('SMTP_USER', '');
 define('SMTP_PASSWORD', '');
 
-__EOF__
+EOF
 }
 
 
