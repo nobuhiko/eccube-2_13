@@ -306,10 +306,6 @@ case "${DBTYPE}" in
 esac
 
 #-- Setup Initial Data
-echo "copy file..."
-cp "./tests/config.php" "./${CONFIG_PHP}"
-cat "./${CONFIG_PHP}"
-
 echo "copy images..."
 cp -rv "./html/install/save_image" "./html/upload/"
 
