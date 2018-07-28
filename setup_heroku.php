@@ -1,9 +1,11 @@
 <?php
+$url = parse_url(getenv('DATABASE_URL'));
+
 putenv("DB=pgsql");
-putenv("DBSERVER=".getenv('DB_HOST'));
-putenv("DBNAME=".getenv('DB_DATABASE'));
-putenv("USER=".getenv('DB_USERNAME'));
-putenv("DBPASS=".getenv('DB_PASSWORD'));
+putenv("DBSERVER=".$url['host']);
+putenv("DBNAME=".substr($url['path'], 1));
+putenv("USER=".$url['user']);
+putenv("DBPASS=".$url['pass']);
 putenv("HTTP_URL=http://".getenv('HEROKU_APP_NAME').".herokuapp.com");
 putenv("HTTPS_URL=http://".getenv('HEROKU_APP_NAME').".herokuapp.com");
 
