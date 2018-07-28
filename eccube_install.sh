@@ -30,16 +30,16 @@
 CONFIG_PHP="data/config/config.php"
 ADMIN_MAIL=${ADMIN_MAIL:-"admin@example.com"}
 SHOP_NAME=${SHOP_NAME:-"EC-CUBE SHOP"}
-HTTP_URL=${HTTP_URL:-"https://polar-citadel-45053.herokuapp.com/"}
-HTTPS_URL=${HTTPS_URL:-"https://polar-citadel-45053.herokuapp.com/"}
+HTTP_URL=${HTTP_URL:-"http://test.local"}
+HTTPS_URL=${HTTPS_URL:-"http://test.local/"}
 ROOT_URLPATH=${ROOT_URLPATH:-"/"}
 DOMAIN_NAME=${DOMAIN_NAME:-""}
 ADMIN_DIR=${ADMIN_DIR:-"admin/"}
 
-DBSERVER=${DBSERVER-"ec2-174-129-192-200.compute-1.amazonaws.com"}
-DBNAME=${DBNAME:-"dfe4mql1b47u0g"}
-DBUSER=${DBUSER:-"tobdiairqjrhte"}
-DBPASS=${DBPASS:-"1aee62b8f0884cebd14fba8f123bf7ab7caa65e8effe6a6ffe2b2b9b90349de1"}
+DBSERVER=${DBSERVER-"127.0.0.1"}
+DBNAME=${DBNAME:-"cube213_dev"}
+DBUSER=${DBUSER:-"cube213_dev_user"}
+DBPASS=${DBPASS:-"password"}
 
 ADMINPASS="f6b126507a5d00dbdbb0f326fe855ddf84facd57c5603ffdf7e08fbb46bd633c"
 AUTH_MAGIC="droucliuijeanamiundpnoufrouphudrastiokec"
@@ -195,7 +195,7 @@ get_optional_sql()
 
 create_config_php()
 {
-    cat <<EOF > "./${CONFIG_PHP}"
+    cat > "./${CONFIG_PHP}" <<__EOF__
 <?php
 define('ECCUBE_INSTALL', 'ON');
 define('HTTP_URL', '${HTTP_URL}');
@@ -219,7 +219,7 @@ define('SMTP_PORT', '');
 define('SMTP_USER', '');
 define('SMTP_PASSWORD', '');
 
-EOF
+__EOF__
 
     cat "./${CONFIG_PHP}"
 }
@@ -306,6 +306,9 @@ case "${DBTYPE}" in
 esac
 
 #-- Setup Initial Data
+echo "copy file..."
+cp "./tests/config.php" "./${CONFIG_PHP}"
+cat "./${CONFIG_PHP}"
 
 echo "copy images..."
 cp -rv "./html/install/save_image" "./html/upload/"
