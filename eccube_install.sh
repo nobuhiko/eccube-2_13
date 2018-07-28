@@ -57,8 +57,7 @@ case "${DBTYPE}" in
     PSQL="psql -h ${DBSERVER}"
     export PGPASSWORD=${DBPASS}
     PGUSER=postgres
-    DROPDB="dropdb -h ${DBSERVER}"
-    CREATEDB="createdb -h ${DBSERVER}"
+    DROPDB="heroku pg:reset DATABASE"
     DBPORT=5432
 ;;
 "appveyor" )
@@ -245,8 +244,6 @@ case "${DBTYPE}" in
     # PostgreSQL
     echo "dropdb..."
     ${DROPDB} ${DBNAME}
-    echo "createdb..."
-    ${CREATEDB} -U ${DBUSER} ${DBNAME} 
     echo "create table..."
     ${PSQL} -U ${DBUSER} -f ${SQL_DIR}/create_table_pgsql.sql ${DBNAME}
     echo "insert data..."
