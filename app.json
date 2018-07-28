@@ -5,7 +5,7 @@
     "repository": "https://github.com/EC-CUBE/eccube-2_13",
     "keywords": ["php", "ec", "e-commerce", "ec-cube"],
     "scripts": {
-        "postdeploy": "cp ./tests/config.php ./data/config/config.php"
+        "postdeploy": "php setup_heroku.php"
     },
     "env": {
         "HEROKU_APP_NAME": {"required": true }
