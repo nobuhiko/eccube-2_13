@@ -46,6 +46,11 @@ AUTH_MAGIC="droucliuijeanamiundpnoufrouphudrastiokec"
 
 DBTYPE=$1;
 
+if [ $DBTYPE = "heroku" ]; then
+  echo "Heroku file copy..."
+cp -rv "./tests/config.php" "./{$CONFIG_PHP}"
+fi
+
 case "${DBTYPE}" in
 "heroku" )
     #-- DB Seting Postgres
@@ -313,12 +318,6 @@ esac
 
 echo "copy images..."
 cp -rv "./html/install/save_image" "./html/upload/"
-
-if [ $DBTYPE = "heroku" ]; then
-  echo "Heroku file copy..."
-cp -rv "./tests/config.php" "./{$CONFIG_PHP}"
-fi
-
 
 echo "creating ${CONFIG_PHP}..."
 create_config_php
