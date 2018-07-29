@@ -13,7 +13,7 @@ $app = getenv('HEROKU_APP_NAME');
 $cmd .= 'export HTTP_URL="http://'.$app.'.herokuapp.com/";';
 $cmd .= 'export HTTPS_URL="https://'.$app.'.herokuapp.com/";';
 
-$cmd = ' sh ./eccube_install.sh heroku';
+$cmd .= ' sh ./eccube_install.sh heroku';
 
 $stdout= fopen('php://stdout', 'w');
 fwrite( $stdout, $cmd."\n" );
