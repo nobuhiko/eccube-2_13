@@ -5,7 +5,7 @@ $stdout= fopen('php://stdout', 'w');
 fwrite( $stdout, print_r($url)."\n" );
 
 $cmd = 'export DBSERVER="'.$url['host'].'";';
-$cmd .= 'export DB_USER="'.$url['user'].'";';
+$cmd .= 'export DBUSER="'.$url['user'].'";';
 $cmd .= 'export DBPASS="'.$url['pass'].'";';
 $cmd .= 'export DBNAME="'.substr($url['path'], 1).'";';
 
